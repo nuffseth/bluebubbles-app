@@ -990,7 +990,10 @@ ModelDefinition getObjectBoxModel() {
           final lastReadMessageGuidOffset = object.lastReadMessageGuid == null
               ? null
               : fbb.writeString(object.lastReadMessageGuid!);
-          fbb.startTable(29);
+          final replyMessageGuidOffset = object.replyMessageGuid == null
+              ? null
+              : fbb.writeString(object.replyMessageGuid!);
+          fbb.startTable(32);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1014,6 +1017,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(25, object.lockChatName);
           fbb.addBool(26, object.lockChatIcon);
           fbb.addOffset(27, lastReadMessageGuidOffset);
+          fbb.addBool(29, object.isReply);
+          fbb.addOffset(30, replyMessageGuidOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1051,7 +1056,9 @@ ModelDefinition getObjectBoxModel() {
               style: const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 52),
               lockChatName: const fb.BoolReader().vTableGet(buffer, rootOffset, 54, false),
               lockChatIcon: const fb.BoolReader().vTableGet(buffer, rootOffset, 56, false),
-              lastReadMessageGuid: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 58))
+              lastReadMessageGuid: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 58),
+              isReply: const fb.BoolReader().vTableGet(buffer, rootOffset, 62, false),
+              replyMessageGuid: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 64))
             ..dbOnlyLatestMessageDate = dbOnlyLatestMessageDateValue == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(

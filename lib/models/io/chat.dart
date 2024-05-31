@@ -322,6 +322,8 @@ class Chat {
     return _latestMessage!;
   }
   set latestMessage(Message m) => _latestMessage = m;
+  bool? isReply = false;
+  String? replyMessageGuid;
   @Property(uid: 526293286661780207)
   DateTime? dbOnlyLatestMessageDate;
   DateTime? dateDeleted;
@@ -357,6 +359,8 @@ class Chat {
     int? pinnedIndex,
     List<Handle>? participants,
     Message? latestMessage,
+    this.isReply = false,
+    this.replyMessageGuid,
     this.autoSendReadReceipts,
     this.autoSendTypingIndicators,
     this.textFieldText,
@@ -386,6 +390,8 @@ class Chat {
       isPinned: json["isPinned"] ?? false,
       hasUnreadMessage: json["hasUnreadMessage"] ?? false,
       latestMessage: message,
+      isReply: json["isReply"] ?? false,
+      replyMessageGuid: json["replyMessageGuid"],
       displayName: json["displayName"],
       customAvatar: json['_customAvatarPath'],
       pinnedIndex: json['_pinIndex'],
@@ -1051,5 +1057,7 @@ class Chat {
     "lockChatName": lockChatName,
     "lockChatIcon": lockChatIcon,
     "lastReadMessageGuid": lastReadMessageGuid,
+    "isReply": isReply!,
+    "replyMessageGuid": replyMessageGuid,
   };
 }
